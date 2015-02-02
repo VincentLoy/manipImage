@@ -3,7 +3,7 @@
     var canvas, ctx, img, imageData, data, hexTab, avgTab, originalData;
     //btn
     var btn_invert, btn_generate_hex,btn_generate_avg, 
-        restore_img, btn_grayscale, btn_wtf_1;
+        restore_img, btn_grayscale, btn_wtf_1, btn_oldTv;
     var consoleMsg = $("#consoleList");
     
     
@@ -69,7 +69,6 @@
         //WTF
         var wtfEffect_1 = function() {
             for(var i = 0 ; i < data.length ; i += 4){
-               avg = parseInt((data[i]+data[i+1]+data[i+2])/3);
                 data[i] = data[i+12+100];
                 data[i+1] = data[i+13+200];
                 data[i+2] = data[i+14+300];
@@ -80,6 +79,31 @@
             ctx.putImageData(imageData, 0, 0);
         }
         
+        var oldTvEffect = function() {
+            if(avgTab != null){
+                var swap = true;
+                for(var i = 0 ; i < data.length ; i += 4){
+                    if(swap){
+                        data[i] = avgTab[i+4];
+                        data[i+1] = avgTab[i+5];
+                        data[i+2] = avgTab[i+5];
+                        swap = false;
+                    }
+                    else{
+                        swap = true;
+                    }
+                }
+                var msg = "Filtre de vieille TV appliqué";
+                    consoleMsg.prepend('<li class="success"> <i class="glyphicon glyphicon-info-sign"></i> '+msg+"</li>");
+
+                ctx.putImageData(imageData, 0, 0);
+            }
+            else{
+               var msg = "Vous Devez générer un tableau de moyenne avant !";
+                    consoleMsg.prepend('<li class="error"> <i class="glyphicon glyphicon-warning-sign"></i> '+msg+"</li>"); 
+            }
+        }
+        
         //outils
         var buildHexTab = function(){
             hexTab = [];
@@ -88,6 +112,7 @@
                 hexTab[j] = rgbToHex(data[i], data[i+1], data[i+2]);
                 j++;
             }
+            alert(parseInt(hexTab[2], 16));
             if(hexTab != null) {
                 var msg = "l'image a été sauvegardée dans un tableau en valeur Hexadecimales";
                 consoleMsg.prepend('<li class="success"> <i class="glyphicon glyphicon-info-sign"></i> '+msg+"</li>");
@@ -116,6 +141,7 @@
         restore_img = document.getElementById("restore");
         btn_grayscale = document.getElementById("btn_grayscale");
         btn_wtf_1 = document.getElementById("btn_wtf_1");
+        btn_oldTv = document.getElementById("btn_old_tv");
         
         //action des btn
         btn_invert.addEventListener("click", invert);
@@ -123,7 +149,8 @@
         btn_generate_avg.addEventListener("click", buildAvgTab);
         restore_img.addEventListener("click", restoreImg);
         btn_grayscale.addEventListener("click", grayscale);
-        btn_wtf_1.addEventListener("click", wtfEffect_1)
+        btn_wtf_1.addEventListener("click", wtfEffect_1);
+        btn_oldTv.addEventListener("click", oldTvEffect);
         
         //methodes      
         function rgbToHex(r,g,b){
