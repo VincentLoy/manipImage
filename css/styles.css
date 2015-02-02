@@ -1,0 +1,85 @@
+textarea:hover, 
+input:hover, 
+textarea:active, 
+input:active, 
+textarea:focus, 
+input:focus,
+button:focus,
+button:active,
+button:hover
+{
+    outline:0px !important;
+    -webkit-appearance:none;
+}
+
+body{
+    font-family: 'Roboto';
+    background: #36404b;
+    color: #fff;
+}
+
+h1{
+    font-weight: 300;
+}
+
+h3{
+    font-weight: 300;    
+}
+
+em{
+    font-weight: 100;
+}
+
+div.danger, div.reversible{
+    padding: 7px;
+}
+canvas{
+    display: block;
+    margin: 15px auto;
+    box-shadow: 0 0 50px rgba(255,255,255,0.3);
+}
+
+#restore{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.consoleMsg{
+    box-sizing: border-box;
+    width: 250px;
+    height: 500px;
+    position: absolute;
+    background: #fff;
+    bottom: 0;
+    right: 0;  
+    box-shadow: -2px -2px 10px #000;
+    color: #000;
+    overflow: hidden;
+}
+
+.consoleMsg h4{
+    background: #36404b;
+    margin: 0;
+    color: #fff;
+    padding: 10px 0;
+    font-weight: 300;
+}
+
+.consoleMsg ul{
+    font-family: 'consolas';
+    list-style: none;
+    padding: 5px;
+    font-size: 12px;
+}
+
+.consoleMsg li{
+    margin-bottom: 10px;
+}
+
+.consoleMsg ul li.success{
+    color: #24863b;
+}
+.consoleMsg ul li.error{
+    color: #bf4545;
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Manipulation d'une image avec Canvas - HTML5</title>
+    
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:500,900,100,300,700,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="text-center">Manipulation d'image avec Canvas</h1>
+        </header>
+        
+        <div class="canvas_ctrl">
+            <h3 class="text-center">- Panel -</h3>
+            <em class="text-center">
+                <p>
+                    Les boutons verts ont une action réversible, les rouge, une action irréversible, les oranges une action necessaire a certaines actions (et sont peut-être dangereuse).
+                </p>
+            </em>
+            <div class="reversible">
+                <button id="btn_invert" class="btn btn-success">Inverser Couleurs</button>
+                <button id="btn_grayscale" class="btn btn-success">Inverser Couleurs</button>
+            </div>
+            <div class="danger">
+                <button id="btn_generate_hex_tab" class="btn btn-warning">Générer tableau d'Hex</button>
+                <button id="btn_generate_avg_tab" class="btn btn-warning">Générer tableau Moyenne</button>
+            </div>
+        </div>
+        
+        <canvas id="picture">
+            <img src="img/obama.jpg" alt="">
+        </canvas>
+        
+        <button id="restore" class="btn btn-primary">Restaurer l'image</button>
+        
+        <div class="consoleMsg">
+           <h4 class="text-center">Console</h4>
+            <ul id="consoleList">
+               <li> > vrai-fausse Console pour rire</li>
+                
+            </ul>
+        </div>
+    </div>
+    
+    <script src="js/jquery.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
