@@ -53,7 +53,7 @@ canvas{
     box-sizing: border-box;
     width: 250px;
     height: 500px;
-    position: absolute;
+    position: fixed;
     background: #fff;
     bottom: 0;
     right: 0;  
