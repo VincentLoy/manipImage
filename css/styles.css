@@ -39,10 +39,14 @@ canvas{
     box-shadow: 0 0 50px rgba(255,255,255,0.3);
 }
 
-#restore{
+.options{
+    display: table;
     position: absolute;
     top: 15px;
     right: 15px;
+}
+.options button{
+    margin-right: 5px;
 }
 
 .consoleMsg{

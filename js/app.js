@@ -1,9 +1,10 @@
 (function ($){
     //variables
-    var canvas, ctx, img, imageData, data, hexTab, avgTab, originalData;
+    var canvas, ctx, img, imageData, data, hexTab, avgTab, originalData, downloadEl;
     //btn
     var btn_invert, btn_generate_hex,btn_generate_avg, 
-        restore_img, btn_grayscale, btn_wtf_1, btn_oldTv;
+        restore_img, btn_grayscale, btn_wtf_1, btn_oldTv,
+        saveBtn;
     var consoleMsg = $("#consoleList");
     
     
@@ -112,7 +113,6 @@
                 hexTab[j] = rgbToHex(data[i], data[i+1], data[i+2]);
                 j++;
             }
-            alert(parseInt(hexTab[2], 16));
             if(hexTab != null) {
                 var msg = "l'image a été sauvegardée dans un tableau en valeur Hexadecimales";
                 consoleMsg.prepend('<li class="success"> <i class="glyphicon glyphicon-info-sign"></i> '+msg+"</li>");
@@ -134,6 +134,18 @@
                 consoleMsg.prepend('<li class="success"> <i class="glyphicon glyphicon-info-sign"></i> '+msg+"</li>");
         };
         
+        var fireClick = function(el) {
+            var evObj;
+            if (el.fireEvent) {
+                return el.fireEvent('onclick');
+            } 
+            else {
+                evObj = document.createEvent('Events');
+                evObj.initEvent('click', true, false);
+                return el.dispatchEvent(evObj);
+            }
+        };
+        
         //Definition des btn
         btn_invert = document.getElementById("btn_invert");
         btn_generate_hex = document.getElementById("btn_generate_hex_tab");
@@ -142,6 +154,8 @@
         btn_grayscale = document.getElementById("btn_grayscale");
         btn_wtf_1 = document.getElementById("btn_wtf_1");
         btn_oldTv = document.getElementById("btn_old_tv");
+        saveBtn = document.getElementById("save");
+        downloadEl = document.getElementById('download'); //not a btn
         
         //action des btn
         btn_invert.addEventListener("click", invert);
@@ -151,6 +165,13 @@
         btn_grayscale.addEventListener("click", grayscale);
         btn_wtf_1.addEventListener("click", wtfEffect_1);
         btn_oldTv.addEventListener("click", oldTvEffect);
+        
+        saveBtn.addEventListener('click', function() {
+            downloadEl.href = canvas.toDataURL('image/png');
+            var msg = "l'image a été téléchargée";
+            consoleMsg.prepend('<li class="success"> <i class="glyphicon glyphicon-download"></i> '+msg+"</li>");
+            return fireClick(download);
+        });
         
         //methodes      
         function rgbToHex(r,g,b){
