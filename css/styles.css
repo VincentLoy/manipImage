@@ -30,7 +30,7 @@ em{
     font-weight: 100;
 }
 
-div.danger, div.reversible{
+div.danger, div.reversible, div.wtf{
     padding: 7px;
 }
 canvas{

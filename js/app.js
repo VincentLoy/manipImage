@@ -2,7 +2,8 @@
     //variables
     var canvas, ctx, img, imageData, data, hexTab, avgTab, originalData;
     //btn
-    var btn_invert, btn_generate_hex,btn_generate_avg, restore_img, btn_grayscale;
+    var btn_invert, btn_generate_hex,btn_generate_avg, 
+        restore_img, btn_grayscale, btn_wtf_1;
     var consoleMsg = $("#consoleList");
     
     
@@ -33,6 +34,8 @@
                 data[i+1] = 255-data[i+1];
                 data[i+2] = 255-data[i+2];
             }
+            var msg = "les couleurs de l'image ont été inversées";
+            consoleMsg.prepend('<li class="success"> <i class="glyphicon glyphicon-thumbs-up"></i> '+msg+"</li>");
             ctx.putImageData(imageData, 0, 0);
         };
         
@@ -59,6 +62,20 @@
             }
             var msg = "l'image est en nuances de gris";
                 consoleMsg.prepend('<li class="success"> <i class="glyphicon glyphicon-info-sign"></i> '+msg+"</li>");
+            
+            ctx.putImageData(imageData, 0, 0);
+        }
+        
+        //WTF
+        var wtfEffect_1 = function() {
+            for(var i = 0 ; i < data.length ; i += 4){
+               avg = parseInt((data[i]+data[i+1]+data[i+2])/3);
+                data[i] = data[i+12+100];
+                data[i+1] = data[i+13+200];
+                data[i+2] = data[i+14+300];
+            }
+            var msg = "Vous avez appliqué un effet devastateur à l'image :O";
+                consoleMsg.prepend('<li class="error"> <i class="glyphicon glyphicon-info-sign"></i> '+msg+"</li>");
             
             ctx.putImageData(imageData, 0, 0);
         }
@@ -98,6 +115,7 @@
         btn_generate_avg = document.getElementById("btn_generate_avg_tab");
         restore_img = document.getElementById("restore");
         btn_grayscale = document.getElementById("btn_grayscale");
+        btn_wtf_1 = document.getElementById("btn_wtf_1");
         
         //action des btn
         btn_invert.addEventListener("click", invert);
@@ -105,6 +123,7 @@
         btn_generate_avg.addEventListener("click", buildAvgTab);
         restore_img.addEventListener("click", restoreImg);
         btn_grayscale.addEventListener("click", grayscale);
+        btn_wtf_1.addEventListener("click", wtfEffect_1)
         
         //methodes      
         function rgbToHex(r,g,b){
