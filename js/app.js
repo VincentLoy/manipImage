@@ -1,10 +1,10 @@
 (function ($){
     //variables
-    var canvas, ctx, img, imageData, data, hexTab, avgTab, originalData, downloadEl;
+    var canvas, ctx, img, imageData, data, hexTab, sortedHexTab, sortedRgbTab, avgTab, originalData, downloadEl;
     //btn
     var btn_invert, btn_generate_hex,btn_generate_avg, 
         restore_img, btn_grayscale, btn_wtf_1, btn_oldTv,
-        saveBtn;
+        saveBtn, btn_sort_hex, btn_sort_rgb, btn_sort_pixels;
     var consoleMsg = $("#consoleList");
     
     
@@ -107,7 +107,7 @@
         
         //outils
         var buildHexTab = function(){
-            hexTab = [];
+            hexTab = new Array();
             var j = 0;
             for(var i = 0 ; i < data.length ; i += 4){
                 hexTab[j] = rgbToHex(data[i], data[i+1], data[i+2]);
@@ -116,6 +116,7 @@
             if(hexTab != null) {
                 var msg = "l'image a été sauvegardée dans un tableau en valeur Hexadecimales";
                 consoleMsg.prepend('<li class="success"> <i class="glyphicon glyphicon-info-sign"></i> '+msg+"</li>");
+                console.log(hexTab);
             }
         };
         
@@ -132,6 +133,66 @@
             }
             var msg = "l'image a été sauvegardée en nuances de gris";
                 consoleMsg.prepend('<li class="success"> <i class="glyphicon glyphicon-info-sign"></i> '+msg+"</li>");
+        };
+        
+        var sortHexTab = function() {
+            if(hexTab == undefined){
+                buildHexTab();
+            }
+            sortedHexTab = hexTab.sort();
+            
+            /*for(var i = hexTab.length-1; i >= 0; i--){
+                var tmp;
+                for(var j = hexTab.length-1; j >= 0 ; i--){
+                    if(hexTab[j]<hexTab[i]){
+                        temp = hexTab[j];
+                        sortedHexTab[j] = hexTab[i];
+                        sortedHexTab[i] = tmp;
+                    }
+                }
+            }*/
+            if(hexTab.length == sortedHexTab.length){
+                var msg = "le tableau d'hexa a été trié avec succès";
+                consoleMsg.prepend('<li class="success"> <i class="glyphicon glyphicon-info-sign"></i> '+msg+"</li>");
+                console.log(sortedHexTab);
+            }
+            else{
+                var msg = "Une erreur s'est produite lors du tri des hexadécimales";
+                consoleMsg.prepend('<li class="error"> <i class="glyphicon glyphicon-info-sign"></i> '+msg+"</li>");
+            }
+        };
+        
+        var sortRgbTab = function() {
+            if(sortedHexTab == undefined){
+                sortHexTab();
+            }
+            sortedRgbTab = [];
+            var currentColor;
+            var j = 0;
+            for(var i = 0; i < data.length ; i += 4){
+                currentColor = HexToRgb(sortedHexTab[j]);
+                sortedRgbTab[i] = currentColor[0];
+                sortedRgbTab[i+1] = currentColor[1];
+                sortedRgbTab[i+2] = currentColor[2];
+                sortedRgbTab[i+3] = 255;
+                j++;
+            }
+            var msg = "le tableau RGB trié généré avec succès";
+                consoleMsg.prepend('<li class="success"> <i class="glyphicon glyphicon-info-sign"></i> '+msg+"</li>");
+            console.log(sortedRgbTab);
+        };
+        
+        var sortImgColors = function() {
+            if(sortedHexTab == undefined){
+                sortRgbTab();
+            }
+            for(var i = 0; i<data.length ; i+=4){
+                data[i] = sortedRgbTab[i];
+                data[i+1] = sortedRgbTab[i+1];
+                data[i+2] = sortedRgbTab[i+2];
+                data[i+3] = sortedRgbTab[i+3];
+            }
+            ctx.putImageData(imageData, 0, 0);
         };
         
         var fireClick = function(el) {
@@ -156,6 +217,9 @@
         btn_oldTv = document.getElementById("btn_old_tv");
         saveBtn = document.getElementById("save");
         downloadEl = document.getElementById('download'); //not a btn
+        btn_sort_hex = document.getElementById("btn_sort_hex");
+        btn_sort_rgb = document.getElementById("btn_sort_rgb");
+        btn_sort_pixels = document.getElementById("btn_sort_pixels");
         
         //action des btn
         btn_invert.addEventListener("click", invert);
@@ -165,6 +229,9 @@
         btn_grayscale.addEventListener("click", grayscale);
         btn_wtf_1.addEventListener("click", wtfEffect_1);
         btn_oldTv.addEventListener("click", oldTvEffect);
+        btn_sort_hex.addEventListener("click", sortHexTab);
+        btn_sort_rgb.addEventListener("click", sortRgbTab);
+        btn_sort_pixels.addEventListener("click", sortImgColors);
         
         saveBtn.addEventListener('click', function() {
             downloadEl.href = canvas.toDataURL('image/png');
@@ -179,6 +246,15 @@
             return (function(h){
                 return new Array(7-h.length).join("0")+h
             })(bin.toString(16).toUpperCase());
+        }
+        
+        function HexToRgb(hex) {
+            //hex = parseInt(hex);
+            var r = parseInt(hex.substring(0,2),16);
+            var g = parseInt(hex.substring(2,4),16);
+            var b = parseInt(hex.substring(4,6),16);
+            //console.log(hex+" to "+r+" "+g+" "+b);
+            return [r,g,b];
         }
         
         function saveOriginalData(){
